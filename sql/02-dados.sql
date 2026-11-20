@@ -104,9 +104,9 @@ SELECT setval(pg_get_serial_sequence('time', 'id_time'), 8);
 
 -- 4. Cadastro de 3 ligas (2 públicas e 1 privada)
 INSERT INTO liga (id_liga, nome, descricao, codigo_convite, limite_participantes, publica, id_dono) VALUES
-    (1, 'Liga Geral FACOM',     'Liga aberta para toda a faculdade', NULL,       50, TRUE,  1),
-    (2, 'Copa LBD 2026',        'Disputa privada da turma de LBD',  'LBD2026',  15, FALSE, 2),
-    (3, 'Desafio Calouros',     'Liga pública de treino',            NULL,       30, TRUE,  3)
+    (1, 'Liga Geral FACOM',     'Liga aberta para toda a faculdade', 'FACOM2026',  50, TRUE,  1),
+    (2, 'Copa LBD 2026',        'Disputa privada da turma de LBD',  'LBD2026',    15, FALSE, 2),
+    (3, 'Desafio Calouros',     'Liga pública de treino',            'CALOUROS26', 30, TRUE,  3)
 ON CONFLICT (id_liga) DO NOTHING;
 
 SELECT setval(pg_get_serial_sequence('liga', 'id_liga'), 3);
