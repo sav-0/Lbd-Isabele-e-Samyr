@@ -122,6 +122,11 @@ BEGIN
             RAISE EXCEPTION 'A rodada % já está consolidada e não pode mais ser alterada.', OLD.numero;
         END IF;
 
+        -- Erro encontrado: testando, uma rodada Futura conseguia ir direto para Fechada ou Consolidada, pulando a etapa Aberta.
+        IF LOWER(OLD.estado) = 'futura' AND LOWER(NEW.estado) NOT IN ('futura', 'aberta') THEN
+            RAISE EXCEPTION 'Transição inválida: uma rodada Futura só pode ir para Aberta.';
+        END IF;
+
         IF LOWER(OLD.estado) = 'aberta' AND LOWER(NEW.estado) NOT IN ('aberta', 'fechada') THEN
             RAISE EXCEPTION 'Transição inválida: uma rodada Aberta só pode ir para Fechada.';
         END IF;
@@ -368,6 +373,17 @@ BEGIN
     ELSE
         v_id_atleta  := NEW.id_atleta;
         v_id_partida := NEW.id_partida;
+    END IF;
+
+    -- Erro encontrado: rodando a carga duas vezes depois deste script, a segunda vez parava com "Não é permitido alterar scouts de uma rodada já consolidada", porque o gatilho roda antes
+    -- do ON CONFLICT DO NOTHING da carga. 
+    IF TG_OP = 'INSERT' AND EXISTS (
+        SELECT 1 FROM registra_scout
+        WHERE id_atleta = NEW.id_atleta
+          AND id_partida = NEW.id_partida
+          AND sigla_scout = NEW.sigla_scout
+    ) THEN
+        RETURN NULL;
     END IF;
 
     SELECT numero_rodada, id_clube_mandante, id_clube_visitante
@@ -681,3 +697,10 @@ BEGIN
     UPDATE rodada SET estado = 'Consolidada' WHERE numero = p_rodada;
 END;
 $$;
+
+-- Erro encontrado: depois da carga, todas as pontuações das rodadas 1 a 34 estavam em 0.
+UPDATE desempenho_na_rodada d
+SET pontuacao = fn_pontuacao_atleta(d.id_atleta, d.numero_rodada)
+FROM rodada r
+WHERE r.numero = d.numero_rodada
+  AND LOWER(r.estado) = 'consolidada';

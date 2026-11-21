@@ -132,7 +132,8 @@ JOIN time tm ON tm.id_time = e.id_time
 JOIN tecnico t ON t.id_tecnico = tm.id_tecnico
 JOIN compoe c ON c.id_time = e.id_time AND c.numero_rodada = e.numero_rodada AND c.capitao = TRUE
 JOIN atleta a_cap ON a_cap.id_atleta = c.id_atleta
-WHERE e.numero_rodada = 1 -- Parâmetro: número da rodada consolidada
+-- Erro encontrado: o exemplo era a rodada 1 e a consulta voltava vazia, porque só a rodada 35 tem escalações então o exemplo foi trocado para a rodada 35.
+WHERE e.numero_rodada = 35 -- Parâmetro: número da rodada consolidada
   AND LOWER(e.estado) = 'confirmada'
 ORDER BY pontuacao_rodada DESC, e.data_confirmacao ASC
 LIMIT 1;

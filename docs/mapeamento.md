@@ -27,7 +27,7 @@
 * **partida** (<u>id_partida</u>, local, data_hora, placar_mandante, placar_visitante, valida, id_clube_mandante -> clube, id_clube_visitante -> clube, numero_rodada -> rodada)
   * *Origem:* Entidade forte `PARTIDA`. Recebeu as chaves estrangeiras dos relacionamentos 1:N `MANDANTE`, `VISITANTE` e `CONTÉM`.
 * **pertence** (<u>id_atleta</u> -> atleta, <u>numero_rodada</u> -> rodada, id_clube -> clube)
-  * *Origem:* Tabela associativa gerada pelo relacionamento ternário N:M:P `PERTENCE`.
+  * *Origem:* Tabela gerada pelo relacionamento ternário N:N:1 `PERTENCE` (cada atleta, em cada rodada, tem um único clube), por isso `id_clube` não entra na chave primária.
 * **tipo_scout** (<u>sigla</u>, descricao, valor_pontos)
   * *Origem:* Entidade forte `TIPO_SCOUT`.
 * **vale_para** (<u>sigla_scout</u> -> tipo_scout, <u>id_posicao</u> -> posicao)
@@ -36,7 +36,7 @@
   * *Origem:* Tabela associativa gerada pelo relacionamento ternário N:M:P `REGISTRA_SCOUT`.
 * **escalacao** (<u>id_time</u> -> time, <u>numero_rodada</u> -> rodada, estado, data_confirmacao, id_esquema -> esquema_tatico)
   * *Origem:* Entidade fraca `ESCALAÇÃO` identificada por `TIME` (`MONTA`) e `RODADA` (`REFERE_SE`), recebendo a chave estrangeira do relacionamento 1:N `USA`.
-* **compoe** (<u>id_time</u> -> time, <u>numero_rodada</u> -> rodada, <u>id_atleta</u> -> atleta, preco_pago, capitao)
+* **compoe** (<u>(id_time, numero_rodada)</u> -> escalacao, <u>id_atleta</u> -> atleta, preco_pago, capitao)
   * *Origem:* Tabela associativa gerada pelo relacionamento N:M `COMPÕE` entre a entidade fraca `ESCALAÇÃO` e `ATLETA`.
 
 ---
