@@ -1,0 +1,35 @@
+# PostgreSQL 18 + pgAdmin · LBD 2026/2 · FACOM/UFMS
+#
+#   docker compose -f postgresql-simples.yaml up -d     # sobe
+#   docker compose -f postgresql-simples.yaml down      # desliga (dados ficam)
+#   docker exec -it lbd-postgres psql -U lbd -d lbd     # entra no banco
+#
+# pgAdmin: http://localhost:5050  (login aluno@ufms.br / lbd2026)
+#   Cadastre o servidor com host "db", porta 5432, usuário lbd, senha lbd2026.
+
+services:
+  db:
+    image: postgres:18
+    container_name: lbd-postgres
+    environment:
+      POSTGRES_USER: lbd
+      POSTGRES_PASSWORD: lbd2026
+      POSTGRES_DB: lbd
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql   # no PostgreSQL 18 o caminho é este
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: lbd-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: aluno@ufms.br
+      PGADMIN_DEFAULT_PASSWORD: lbd2026
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

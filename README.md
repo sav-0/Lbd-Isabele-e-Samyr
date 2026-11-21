@@ -21,13 +21,14 @@ app/     aplicação de terminal
 
 ## Como subir o banco
 
-Usamos o PostgreSQL no Docker, o mesmo container da disciplina (`postgresql-simples.yaml`):
+Usamos o PostgreSQL no Docker, o mesmo container da disciplina. O arquivo `postgresql-simples.yaml` está na raiz do repositório:
 
 ```bash
 docker compose -f postgresql-simples.yaml up -d
 ```
 
 Banco `lbd`, usuário `lbd`, senha `lbd2026`, porta `5432`.
+Se o container `lbd-postgres` da disciplina já estiver rodando, não precisa subir de novo.
 
 ## Instalar as dependências do Python
 
@@ -59,3 +60,16 @@ Se quiser baixar de novo: `cd carga && python3 coleta.py`.
 - `python3 carga.py 35` carrega só os scouts da rodada 35. Ela é a rodada jogada no vídeo, então esse comando roda depois de fechar o mercado.
 
 A carga pode rodar duas vezes seguidas sem duplicar dados.
+
+## Aplicação
+
+Com o banco montado (passos acima), rodar da pasta raiz do repositório:
+
+```bash
+python3 app/app.py
+```
+
+- Técnico: cadastrar, escolher o técnico, criar liga, entrar em liga, ver o mercado (filtros por posição, clube e preço), montar e confirmar a escalação e ver o ranking da liga (por rodada ou acumulado).
+- Administrador (opção 8): abrir rodada, fechar mercado, carregar as estatísticas da rodada (roda o `carga.py` com o número da rodada) e consolidar.
+
+Roteiro de uma rodada completa: abrir a rodada 35, escalar os técnicos, fechar o mercado, carregar as estatísticas da 35 e consolidar.

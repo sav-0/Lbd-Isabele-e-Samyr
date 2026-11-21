@@ -286,6 +286,18 @@ BEGIN
         RAISE EXCEPTION 'Operação recusada: esta escalação já foi confirmada.';
     END IF;
 
+    -- Erro encontrado: testando a aplicação, incluir o mesmo atleta duas vezes era recusado pela
+    -- chave primária, mas com a mensagem do PostgreSQL em inglês (duplicate key value...).
+    -- O enunciado pede mensagem clara em português, então a verificação foi adicionada aqui.
+    IF TG_OP = 'INSERT' AND EXISTS (
+        SELECT 1 FROM compoe
+        WHERE id_time = NEW.id_time
+          AND numero_rodada = NEW.numero_rodada
+          AND id_atleta = NEW.id_atleta
+    ) THEN
+        RAISE EXCEPTION 'Este atleta já está na escalação.';
+    END IF;
+
     IF TG_OP IN ('INSERT', 'UPDATE') THEN
         -- 3. Atleta precisa estar Provável ou Dúvida
         SELECT s.descricao, a.id_posicao, p.nome
