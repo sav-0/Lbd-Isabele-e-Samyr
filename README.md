@@ -7,6 +7,7 @@ Trabalho prático de Laboratório de Banco de Dados (LBD 2026/2 - FACOM/UFMS).
 | Nome | RGA |
 |---|---|
 | Isabele Maria Firmino | 202519070584 |
+| Samyr Arruda Vilanova | 202219040078 |
 
 
 ## O que tem em cada pasta
