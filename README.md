@@ -75,3 +75,7 @@ python3 app/app.py
 - Administrador (opção 8): abrir rodada, fechar mercado, carregar as estatísticas da rodada (roda o `carga.py` com o número da rodada) e consolidar.
 
 Roteiro de uma rodada completa: abrir a rodada 35, escalar os técnicos, fechar o mercado, carregar as estatísticas da 35 e consolidar.
+
+## Link vídeo 
+
+url: https://youtu.be/4EKg3pJTxuo
