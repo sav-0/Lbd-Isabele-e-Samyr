@@ -39,10 +39,13 @@ def carregar_scouts(r):
 if len(sys.argv) > 1:
     carregar_scouts(int(sys.argv[1]))
 else:
-    #no mercado o campo nome do clube vem igual à sigla (MIR), o nome mesmo está em apelido (Mirassol)
+    # no mercado o campo nome do clube vem igual à sigla (FLA) e o apelido é o apelido mesmo (Mengão, Timão,
+    # e Fluminense e São Paulo são os dois "Tricolor"). Erro encontrado: antes usávamos o apelido e o mercado
+    # mostrava "Mengão" no lugar de Flamengo. A API não tem o nome completo, então usamos o slug
+    # (flamengo, sao-paulo) trocando o "-" por espaço: Flamengo, Sao Paulo
     for c in mercado["clubes"].values():
         cur.execute("INSERT INTO clube VALUES (%s, %s, %s, %s) ON CONFLICT DO NOTHING",
-                    (c["id"], c["apelido"], c["abreviacao"], c["escudos"]["60x60"]))
+                    (c["id"], c["slug"].replace("-", " ").title(), c["abreviacao"], c["escudos"]["60x60"]))
     for p in mercado["posicoes"].values():
         cur.execute("INSERT INTO posicao VALUES (%s, %s, %s) ON CONFLICT DO NOTHING",
                     (p["id"], p["nome"], p["abreviacao"]))

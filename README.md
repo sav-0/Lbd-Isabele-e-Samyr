@@ -2,6 +2,8 @@
 
 Trabalho prático de Laboratório de Banco de Dados (LBD 2026/2 - FACOM/UFMS).
 
+Link repo: https://github.com/sav-0/Lbd-Isabele-e-Samyr
+
 ## Integrantes
 
 | Nome | RGA |
